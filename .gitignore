@@ -2,9 +2,5 @@
 __pycache__
 core/__pycache__
 
-# Ignoring database\configs files
-database/*
-configs/*
-
 # U don't need my TODO's :)
-./todo.txt
+todo.txt
