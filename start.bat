@@ -1,0 +1,2 @@
+@python ftub.py
+@PAUSE
