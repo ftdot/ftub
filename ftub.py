@@ -24,7 +24,7 @@ dev_mode = False # режим разработчика плагинов.
 #########################
 
 # fTUB - инициализация
-client = TelegramClient('antdelub', api_id, api_hash)
+client = TelegramClient('ftub', api_id, api_hash)
 client.start() # старт юзербота
 
 pm = PluginManager(debug_mode=dev_mode) # менеджер аддонов

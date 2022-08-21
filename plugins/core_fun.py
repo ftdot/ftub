@@ -11,13 +11,14 @@ plugin = Plugin("CoreFun", "Веселья", "1.0.0", "ftdot", "https://github.c
 
 @plugin.load
 def load():
-  global cached
+  global cached, cached_func
 
   cached = plugin.communicator.values.cached
+  cached_func = plugin.communicator.values.cached_function
 
 
-async def get_peer_id(): return (await plugin.client(GetFullUserRequest(event.peer_id)))
-async def get_from_id(): return (await plugin.client(GetFullUserRequest(event.from_id)))
+async def get_peer_id(event): return (await plugin.client(GetFullUserRequest(event.peer_id)))
+async def get_from_id(event): return (await plugin.client(GetFullUserRequest(event.from_id)))
 
 ##########################
 # кто ...
@@ -28,10 +29,10 @@ async def cmd_who_is(event, args):
 
   if event.is_private:
 
-    member1 = await cached.async_cached_object(event.peer_id.user_id, get_peer_id)
-    author = await cached.async_cached_object(event.from_id.user_id, get_from_id)
+    member1 = await cached.async_cached_object(event.peer_id.user_id, cached_func(get_peer_id,(event,)))
+    author = await cached.async_cached_object(event.from_id.user_id, cached_func(get_from_id,(event,)))
 
-    who = random.choice([{member1.user.first_name}, {author.user.first_name}])
+    who = random.choice([member1.user.first_name, author.user.first_name])
 
     await plugin.client.edit_message(event.chat_id, event.message, f'❓ Кто {text}?\n🔸 Шарманка думает что `{who}` {text}')
 
@@ -44,10 +45,10 @@ async def cmd_who_was(event, args):
 
   if event.is_private:
 
-    member1 = await cached.async_cached_object(event.peer_id.user_id, get_peer_id)
-    author = await cached.async_cached_object(event.from_id.user_id, get_from_id)
+    member1 = await cached.async_cached_object(event.peer_id.user_id, cached_func(get_peer_id,(event,)))
+    author = await cached.async_cached_object(event.from_id.user_id, cached_func(get_from_id,(event,)))
 
-    whowas = random.choice([{member1.user.first_name}, {author.user.first_name}])
+    whowas = random.choice([member1.user.first_name, author.user.first_name])
 
     await plugin.client.edit_message(event.chat_id, event.message, f'❓ Кого {text}?\n🔸 Шарманка думает что `{whowas}` {text}')
 

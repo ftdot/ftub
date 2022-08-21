@@ -4,6 +4,7 @@ import os # для работы с файлами
 
 from core.colors import Fore # для цветного вывода
 from core.pluginapi import PluginConfig, PluginsSwitch, Communicator
+from core.info import TITLE
 
 ##########################
 # Менеджер плагинов
@@ -56,11 +57,11 @@ class PluginManager:
 
     # проверяем, валидный ли плагин
     if idx_plugin == None:
-      print(f'  {Fore.RED}[!] Плагин по пути "{path}" не может быть загружен!{Fore.RESET}')
+      print(f'{Fore.RED}[!] Плагин по пути "{path}" не может быть загружен!{Fore.RESET}')
 
       if self.debug_mode: exit()
     else:
-      print(f'  {Fore.GREEN}[+] Плагин {Fore.RESET}{idx_plugin.get_name()} : {idx_plugin.get_desc()} ({idx_plugin.get_version()}){Fore.GREEN} загружен!{Fore.RESET}')
+      print(f'{Fore.GREEN}[+] Плагин {Fore.RESET}{idx_plugin.get_name()} : {idx_plugin.get_desc()} ({idx_plugin.get_version()}){Fore.GREEN} загружен!{Fore.RESET}')
 
     return idx_plugin
 
@@ -128,14 +129,14 @@ class PluginManager:
           pp = self.execute_plugin(p)
 
           if dis:
-            print(f'  {Fore.CYAN}[i] Плагин {pfile} отключён, но был загружен{Fore.RESET}')
+            print(f'{Fore.CYAN}[i] Плагин {pfile} отключён, но был загружен{Fore.RESET}')
             continue
 
           pn = self.register_plugin(pp)
           self.to_load.append(pn)
 
         except Exception as e:
-          print(f'  {Fore.RED}[!] Плагин не смог загрузиться, по скольку была вызвана ошибка: {e}.\n  {Fore.CYAN}Обратитесь к разработчку!{Fore.RESET}\n')
+          print(f'{Fore.RED}[!] Плагин не смог загрузиться, по скольку была вызвана ошибка: {e}.\n{Fore.CYAN}Обратитесь к разработчку!{Fore.RESET}\n')
 
   ##########################
 
@@ -148,10 +149,24 @@ class PluginManager:
       self.plugins[p].communicator = self.communicator
 
     if self.debug_mode:
-      print(f'{Fore.CYAN}[i] Все ссылки загружены, загружаем плагины{Fore.RESET}')
+      print(f'{Fore.CYAN}[i] Все ссылки загружены, запускаем плагины{Fore.RESET}')
 
     for pn in self.to_load:
-      self.load_plugin(pn)
+      if self.debug_mode:
+        p = self.plugins[pn]
+        self.load_plugin(pn)
+        print(f'{Fore.YELLOW}[+] Плагин {Fore.RESET}{p.get_name()} : {p.get_desc()} ({p.get_version()}){Fore.GREEN} запущен!{Fore.RESET}')
+
+        continue
+
+      try:
+        p = self.plugins[pn]
+        self.load_plugin(pn)
+        print(f'{Fore.YELLOW}[+] Плагин {Fore.RESET}{p.get_name()} : {p.get_desc()} ({p.get_version()}){Fore.GREEN} запущен!{Fore.RESET}')
+      except:
+        print(f'{Fore.RED}[!] Плагин не смог запуститься, по скольку была вызвана ошибка: {e}.\n{Fore.CYAN}Обратитесь к разработчку!{Fore.RESET}\n')
+
+    print()
 
   ##########################
 

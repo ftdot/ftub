@@ -15,6 +15,20 @@ plugin.default_config = {
 }
 
 ##########################
+# врап на функцию для удобства
+class CachedFunction:
+
+  def __init__(self, func, args=()):
+    self.func = func
+    self.args = args
+
+  def call(self):
+    return self.func(*self.args)
+
+  async def async_call(self):
+    return await self.func(*self.args)
+
+##########################
 # класс для кэширования объектов
 class Cached:
 
@@ -24,7 +38,7 @@ class Cached:
 
   def force_cache(self, key, func): # принудительное кэширование
     cached_time = time.time()+self.cache_time
-    object_ = func()
+    object_ = func.call()
 
     self.cached_objects[key] = {'cached_time':cached_time, 'object': object_}
 
@@ -44,7 +58,7 @@ class Cached:
 
   async def async_force_cache(self, key, func): # принудительное кэширование
     cached_time = time.time()+self.cache_time
-    object_ = await func()
+    object_ = await func.async_call()
 
     self.cached_objects[key] = {'cached_time':cached_time, 'object': object_}
 
@@ -70,12 +84,14 @@ def load_config(config): # загружаем конфиг
   plugin.set_config(config)
 
 @plugin.load
-def load(): # выгружаем экземпляр
+def load(): # загружаем 
   cached_inst = Cached() # создаём экземпляр
   cached_inst.cache_time = plugin.config['cache_time']
 
   plugin.communicator.values.cached = cached_inst
+  plugin.communicator.values.cached_function = CachedFunction
 
 @plugin.unload
 def unload(): # удаляем экземпляр
   del plugin.communicator.values.cached
+  del plugin.communicator.values.cached_function
