@@ -18,7 +18,7 @@
 **EN:** Project will be released in the future. With the new power, with the new feautres. With the clean code and detailed documentation
 
 ### FAQ:
-- На Русском, Russian \ На английском, English
+- На русском, Russian \ На английском, English
 - Дата релиза не назначена \ Date of release not assigned
 - Имя продукта и его лицензия будут другие \ Product name and license will be different
 - Код будет переписан, будет намного качественней и мы будем использовать наработки из этого проекта \ Project code will be rewritten, will be better and we also will be use development experience from this project
