@@ -1,4 +1,7 @@
+
 ## Больше не обслуживается! \ No longer maintained!
+#### Проект мигрировал на https://github.com/ftdot/easytl
+#### Project has merged to https://github.com/ftdot/easytl
 
 <p align="center">
   <img src="https://github.com/ftdot/ftdot/raw/main/imgs/ftub-iicon.png" />
